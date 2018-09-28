@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         });
         //Inint();
     }
+
     //http://gc.ditu.aliyun.com/geocoding?a=苏州市
     private void Inint() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.douban.com/v2/")
@@ -42,19 +43,22 @@ public class MainActivity extends AppCompatActivity {
                 //增加返回值为Oservable<T>的支持
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-        RequestServer reqest = retrofit.create(RequestServer.class);//这里采用的是Java的动态代理模式
 
+        // 创建 网络请求接口 的实例
+        RequestServer reqest = retrofit.create(RequestServer.class);//这里采用的是Java的动态代理模式
+        //对 发送请求 进行封装
         Call<Address> call = reqest.getString("小王子", "", 0, 3);
         //采用异步请求
         call.enqueue(new Callback<Address>() {
             @Override
             public void onResponse(Call<Address> call, Response<Address> response) {
-                Log.e("===","return:"+response.body().toString());
+//                处理返回的数据结果
+                Log.e("===", "return:" + response.body().toString() + "成功");
             }
 
             @Override
             public void onFailure(Call<Address> call, Throwable t) {
-                Log.e("===","失败");
+                Log.e("===", "失败");
             }
         });
 
